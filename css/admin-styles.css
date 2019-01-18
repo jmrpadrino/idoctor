@@ -1,0 +1,22 @@
+/**
+ * CSS STYLES PARA LA ADMINISTRACION DE IDOCTOR
+ */
+.cmb-type-group .cmb2-wrap>.cmb-field-list>.cmb-row, 
+.cmb2-postbox .cmb2-wrap>.cmb-field-list>.cmb-row{
+    padding: 0;
+}
+.cmb-type-group .cmb-repeatable-group:not(:last-of-type),
+.cmb-type-group .cmb-row:not(:last-of-type), 
+.cmb2-postbox .cmb-repeatable-group:not(:last-of-type), 
+.cmb2-postbox .cmb-row:not(:last-of-type){
+    border: none;
+}
+.cmb-type-group .cmb-row, 
+.cmb2-postbox .cmb-row{
+    margin: 0;
+}
+.idoctor-ad-img-placeholder{
+    width: 100%;
+    display: block;
+    height: auto;
+}
