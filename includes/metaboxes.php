@@ -126,7 +126,7 @@ function idoctor_register_demo_metabox() {
 		'title'         => esc_html__( 'Identificación', 'idoctor' ),
 		'object_types'  => array( 'paciente' ), // Post type
         'context'       => 'side',
-        'priority'      => 'high'
+        'priority'      => 'high',
         )
     );
     
@@ -139,8 +139,9 @@ function idoctor_register_demo_metabox() {
     
     $cmb_datos_personales = new_cmb2_box( array(
 		'id'            => $prefix . 'datos_personales',
-		'title'         => esc_html__( 'Datos Personales', 'idoctor' ),
+		'title'         => esc_html__( 'Datos Personales - Haga clic para mostrar u ocultar', 'idoctor' ),
 		'object_types'  => array( 'paciente' ), // Post type
+        //'closed'        => true
         )
     );
     
@@ -158,6 +159,12 @@ function idoctor_register_demo_metabox() {
 		'name'       => esc_html__( 'Fecha de Nacimiento', 'idoctor' ),
 		'id'         => $prefix . 'fnac',
 		'type'       => 'text_date',
+        'attributes' => array(
+            // CMB2 checks for datepicker override data here:
+            'data-datepicker' => json_encode( array(
+                'yearRange' => '1910:'. ( date( 'Y' ) + 10 ),
+            ) ),
+        ),
 	) );
     $cmb_datos_personales->add_field( array(
 		'name'       => esc_html__( 'Lugar de Nacimiento', 'idoctor' ),
@@ -210,14 +217,21 @@ function idoctor_register_demo_metabox() {
 		'id'         => $prefix . 'profesion',
 		'type'       => 'text',
 	) );
+    $cmb_datos_personales->add_field( array(
+		//'name' => esc_html__( 'Publicidad', 'cmb2' ),
+		'desc' => '<a href="https://www.pfizer.com.ec/" target="_blank"><img src="' . IDOCTOR_PLUGIN_URI . '/img/ads-placeholder-2.jpg" class="idoctor-ad-img-placeholder" title="iDoctor - Advertising"></a>',
+		'id'   => $prefix . 'banner_ad',
+		'type' => 'title',
+	) );
 
 	/**
      * DOMICILO FISCAL / DIRECCIONES
      */
     $cmb_domicilio_fiscal = new_cmb2_box( array(
 		'id'            => $prefix . 'domicilio_fiscal',
-		'title'         => esc_html__( 'Información de Contacto / Domicilio Fiscal', 'idoctor' ),
+		'title'         => esc_html__( 'Información de Contacto / Domicilio Fiscal - Haga clic para mostrar u ocultar', 'idoctor' ),
 		'object_types'  => array( 'paciente' ), // Post type
+        'closed'        => true
         )
     );
     $cmb_domicilio_fiscal->add_field( array(
@@ -261,23 +275,139 @@ function idoctor_register_demo_metabox() {
 		'type'       => 'text_email',
 	) );
     $cmb_domicilio_fiscal->add_field( array(
-		'name' => esc_html__( 'Otro Domicilio', 'cmb2' ),
+		'name' => esc_html__( 'Otro Domicilio / Residencia Vacacional', 'cmb2' ),
 		'id'   => $prefix . 'title',
 		'type' => 'title',
 	) );
     $cmb_domicilio_fiscal->add_field( array(
-		//'name' => esc_html__( 'Publicidad', 'cmb2' ),
-		'desc' => '<a href="https://www.pfizer.com.ec/" target="_blank"><img src="' . IDOCTOR_PLUGIN_URI . '/img/ads-placeholder-2.jpg" class="idoctor-ad-img-placeholder" title="iDoctor - Advertising"></a>',
-		'id'   => $prefix . 'banner_ad',
-		'type' => 'title',
+		'name'       => esc_html__( 'Calle / Número', 'idoctor' ),
+		'id'         => $prefix . 'odpcalle',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'Código Postal', 'idoctor' ),
+		'id'         => $prefix . 'odppostal',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'Ciudad', 'idoctor' ),
+		'id'         => $prefix . 'odpciudad',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'Provincia', 'idoctor' ),
+		'id'         => $prefix . 'odpprovincia',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'País', 'idoctor' ),
+		'id'         => $prefix . 'odppais',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'Teléfono', 'idoctor' ),
+		'id'         => $prefix . 'odptelefono',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'Móvil', 'idoctor' ),
+		'id'         => $prefix . 'odpmovil',
+		'type'       => 'text',
+	) );
+    $cmb_domicilio_fiscal->add_field( array(
+		'name'       => esc_html__( 'Correo Electrónico', 'idoctor' ),
+		'id'         => $prefix . 'odpemail',
+		'type'       => 'text_email',
 	) );
     /**
      * INFORMACION LABORAL
      */
+    $cmb_laboral = new_cmb2_box( array(
+		'id'            => $prefix . 'laboral',
+		'title'         => esc_html__( 'Información Laboral - Haga clic para mostrar u ocultar', 'idoctor' ),
+		'object_types'  => array( 'paciente' ), // Post type
+		'closed'     => true, // true to keep the metabox closed by default
+	) );
+
+    $cmb_laboral->add_field( array(
+		'name'       => esc_html__( 'Nombre de la empresa', 'idoctor' ),
+		'id'         => $prefix . 'labempresa',
+		'type'       => 'text',
+	) );
+    $cmb_laboral->add_field( array(
+		'name'       => esc_html__( 'Teléfono', 'idoctor' ),
+		'id'         => $prefix . 'labtelefono',
+		'type'       => 'text',
+	) );
+    $cmb_laboral->add_field( array(
+		'name'       => esc_html__( 'Calle / Número', 'idoctor' ),
+		'id'         => $prefix . 'labcalle',
+		'type'       => 'text',
+	) );
+    $cmb_laboral->add_field( array(
+		'name'       => esc_html__( 'Localidad', 'idoctor' ),
+		'id'         => $prefix . 'lablocalidad',
+		'type'       => 'text',
+	) );
+    $cmb_laboral->add_field( array(
+		'name'       => esc_html__( 'País', 'idoctor' ),
+		'id'         => $prefix . 'labpais',
+		'type'       => 'text',
+	) );
+
+    /**
+     * INFORMACION CONTACTO ALTERNATIVO
+     */
+    $cmb_personacontacto = new_cmb2_box( array(
+		'id'            => $prefix . 'personacontacto',
+		'title'         => esc_html__( 'Persona de referencia - Haga clic para mostrar u ocultar', 'idoctor' ),
+		'object_types'  => array( 'paciente' ), // Post type
+		'closed'     => true, // true to keep the metabox closed by default
+	) );
+
+    $cmb_datos_personales->add_field( array(
+		'name'       => esc_html__( 'Relación', 'idoctor' ),
+		'id'         => $prefix . 'pcrelacion',
+		'type'             => 'select',
+		'show_option_none' => 'Seleccione',
+		'options'          => array(
+			'conyuge'   => esc_html__( 'Cónyuge', 'idoctor' ),
+			'pareja'   => esc_html__( 'Pareja de Hecho Registrada', 'idoctor' ),
+			'padre'     => esc_html__( 'Padres/padre o madre', 'idoctor' ),
+			'hermano'     => esc_html__( 'Hermano', 'idoctor' ),
+			'otro'     => esc_html__( 'Otro', 'idoctor' ),
+		),
+	) );
+    $cmb_personacontacto->add_field( array(
+		'name'       => esc_html__( 'Nombre de la empresa', 'idoctor' ),
+		'id'         => $prefix . 'labempresa',
+		'type'       => 'text',
+	) );
+    $cmb_personacontacto->add_field( array(
+		'name'       => esc_html__( 'Teléfono', 'idoctor' ),
+		'id'         => $prefix . 'labtelefono',
+		'type'       => 'text',
+	) );
+    $cmb_personacontacto->add_field( array(
+		'name'       => esc_html__( 'Calle / Número', 'idoctor' ),
+		'id'         => $prefix . 'labcalle',
+		'type'       => 'text',
+	) );
+    $cmb_personacontacto->add_field( array(
+		'name'       => esc_html__( 'Localidad', 'idoctor' ),
+		'id'         => $prefix . 'lablocalidad',
+		'type'       => 'text',
+	) );
+    $cmb_personacontacto->add_field( array(
+		'name'       => esc_html__( 'País', 'idoctor' ),
+		'id'         => $prefix . 'labpais',
+		'type'       => 'text',
+	) );
+
 	$cmb_demo = new_cmb2_box( array(
 		'id'            => $prefix . 'metabox',
 		'title'         => esc_html__( 'Domiciio Fiscal / Dirección', 'idoctor' ),
-		'object_types'  => array( 'paciente' ), // Post type
+		'object_types'  => array( 'alguno' ), // Post type
 		// 'show_on_cb' => 'idoctor_show_if_front_page', // function should return a bool value
 		// 'context'    => 'normal',
 		// 'priority'   => 'high',
@@ -639,7 +769,7 @@ function idoctor_register_about_page_metabox() {
 	$cmb_about_page = new_cmb2_box( array(
 		'id'           => $prefix . 'metabox',
 		'title'        => esc_html__( 'About Page Metabox', 'cmb2' ),
-		'object_types' => array( 'paciente' ), // Post type
+		'object_types' => array( 'alguno' ), // Post type
 		'context'      => 'normal',
 		'priority'     => 'high',
 		'show_names'   => true, // Show field names on the left
@@ -670,7 +800,7 @@ function idoctor_register_repeatable_group_field_metabox() {
 	$cmb_group = new_cmb2_box( array(
 		'id'           => $prefix . 'metabox',
 		'title'        => esc_html__( 'Repeating Field Group', 'cmb2' ),
-		'object_types' => array( 'paciente' ),
+		'object_types' => array( 'alguno' ),
 	) );
 
 	// $group_field_id is the field id string, so in this case: $prefix . 'demo'
